@@ -1,0 +1,324 @@
+<!--
+  popup.html
+  Main popup UI for BellyFatTracker extension.
+  - Clean, dark-friendly design
+  - Daily checklist, meal/protein tracker, weekly progress, settings
+  This file contains only markup and links to `style.css`, `lib/simple-chart.js` and `popup.js`.
+-->
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FitTrack Daily</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="title-row">
+        <h1>FitTrack Daily</h1>
+        <div class="header-right">
+          <button id="themeToggle" class="icon-btn" title="Toggle light/dark">☀️</button>
+          <span id="streakBadge" class="streak-badge"></span>
+          <small id="headerSubtitle" class="muted">🥦 Veg · Day Shift</small>
+        </div>
+      </div>
+    </header>
+
+    <section class="reminder-row-section">
+      <div class="reminder-row">
+        <div>
+          <label for="reminderTime">Daily reminder</label>
+          <input id="reminderTime" type="time">
+        </div>
+        <div class="toggle-row">
+          <label for="enableReminders">Enable</label>
+          <input id="enableReminders" type="checkbox">
+        </div>
+      </div>
+      <div class="diet-toggle-row">
+        <span class="diet-toggle-label">Diet</span>
+        <button id="dietModeVeg" class="diet-btn diet-active">🥦 Vegetarian</button>
+        <button id="dietModeNonveg" class="diet-btn">🍗 Non-Veg</button>
+      </div>
+      <div class="goals-row">
+        <div class="goal-field">
+          <label for="proteinGoal">🎯 Protein goal (g)</label>
+          <input id="proteinGoal" type="number" min="30" max="300" step="5" placeholder="90">
+        </div>
+        <div class="goal-field">
+          <label for="calorieGoal">🔥 Calorie goal (kcal)</label>
+          <input id="calorieGoal" type="number" min="500" max="5000" step="50" placeholder="1800">
+        </div>
+        <div class="goal-field">
+          <label for="stepsGoal">👟 Steps goal</label>
+          <input id="stepsGoal" type="number" min="1000" max="50000" step="500" placeholder="8000">
+        </div>
+        <div class="goal-field">
+          <label for="sleepGoal">😴 Sleep goal (hrs)</label>
+          <input id="sleepGoal" type="number" min="4" max="12" step="0.5" placeholder="7">
+        </div>
+      </div>
+    </section>
+
+    <section class="shift-section collapsible">
+      <h2>My Shift</h2>
+      <div class="shift-type-row">
+        <button class="shift-type-btn shift-active" data-shift="Day">☀️ Day</button>
+        <button class="shift-type-btn" data-shift="Night">🌙 Night</button>
+        <button class="shift-type-btn" data-shift="Rotating">🔄 Rotating</button>
+        <button class="shift-type-btn" data-shift="Custom">✏️ Custom</button>
+      </div>
+      <div class="shift-times">
+        <div class="shift-time-field">
+          <label for="shiftWake">⏰ Wake up</label>
+          <input id="shiftWake" type="time">
+        </div>
+        <div class="shift-time-field">
+          <label for="shiftSleep">🛌 Sleep at</label>
+          <input id="shiftSleep" type="time">
+        </div>
+      </div>
+      <div class="shift-name-row">
+        <input id="shiftName" type="text" placeholder="Custom label, e.g. ICU Night, Ops Morning…" maxlength="30">
+        <button id="saveShift" class="primary">Save Shift</button>
+      </div>
+    </section>
+
+    <section class="checklist">
+      <h2>Daily Checklist</h2>
+      <div class="grid">
+        <label class="check" data-key="hitProtein"><input type="checkbox" id="hitProtein">Hit Protein Target</label>
+        <label class="check" data-key="stayedCalories"><input type="checkbox" id="stayedCalories">Stayed in
+          Calories</label>
+        <label class="check" data-key="workoutDone"><input type="checkbox" id="workoutDone">Workout Done</label>
+        <label class="check" data-key="drankWater"><input type="checkbox" id="drankWater">Drank 2–3L Water</label>
+        <label class="check" data-key="noJunk"><input type="checkbox" id="noJunk">No Junk/Sugar</label>
+      </div>
+      <div class="daily-extras">
+        <div class="extra-field">
+          <label for="stepsToday">👟 Steps</label>
+          <input id="stepsToday" type="number" min="0" step="100" placeholder="e.g. 8000">
+        </div>
+        <div class="extra-field">
+          <label for="sleepHours">😴 Sleep (hrs)</label>
+          <input id="sleepHours" type="number" min="0" max="24" step="0.5" placeholder="e.g. 7">
+        </div>
+      </div>
+      <div class="mood-row">
+        <span class="mood-label">Mood today</span>
+        <div class="mood-buttons">
+          <button class="mood-btn" data-mood="bad" title="Bad">😔</button>
+          <button class="mood-btn" data-mood="meh" title="Meh">😐</button>
+          <button class="mood-btn" data-mood="ok" title="OK">🙂</button>
+          <button class="mood-btn" data-mood="good" title="Good">😄</button>
+          <button class="mood-btn" data-mood="pumped" title="Pumped">💪</button>
+        </div>
+      </div>
+      <div class="water-tracker">
+        <div class="water-header">
+          <span class="water-label">💧 Water</span>
+          <span class="water-count"><span id="waterCount">0</span>/8 glasses</span>
+        </div>
+        <div class="water-glasses" id="waterGlasses"></div>
+      </div>
+      <div class="notes">
+        <label for="notes">Notes (optional)</label>
+        <textarea id="notes" rows="3" placeholder="How was the day? Any cravings or wins?"></textarea>
+      </div>
+    </section>
+
+    <section class="fast-section collapsible">
+      <h2>⏱️ Fasting Timer</h2>
+      <div class="fast-layout">
+        <div class="fast-ring-wrap">
+          <svg class="fast-svg" width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="28" fill="none" stroke="var(--border)" stroke-width="6" />
+            <circle id="fastRing" cx="40" cy="40" r="28" fill="none" stroke="var(--accent)" stroke-width="6"
+              stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="175.9" transform="rotate(-90 40 40)" />
+          </svg>
+          <div id="fastTimeDisplay" class="fast-time-overlay">——:——:——</div>
+        </div>
+        <div class="fast-info">
+          <div id="fastStatus" class="fast-status muted">No active fast</div>
+          <div class="fast-target-row">
+            <label for="fastTarget">Target (hrs)</label>
+            <input id="fastTarget" type="number" min="8" max="72" step="0.5" value="16">
+          </div>
+          <button id="fastToggleBtn" class="primary fast-btn">Start Fast</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="diet-plan-section collapsible">
+      <h2>My Diet Plan</h2>
+
+      <!-- Tabs -->
+      <div class="plan-tabs">
+        <button class="plan-tab plan-tab-active" id="tabBuild">✏️ Build</button>
+        <button class="plan-tab" id="tabImport">📁 Import File</button>
+      </div>
+
+      <!-- ── Build panel ── -->
+      <div id="panelBuild">
+        <div id="planBuilderRows">
+          <!-- rows injected by popup.js -->
+        </div>
+        <div class="plan-builder-actions">
+          <button id="addPlanRowBtn" class="secondary">+ Add Row</button>
+          <button id="savePlanBtn" class="primary">Save Plan</button>
+        </div>
+      </div>
+
+      <!-- ── Import panel ── -->
+      <div id="panelImport" class="hidden">
+        <p class="muted">Upload a CSV or Excel diet plan.</p>
+        <div class="upload-row">
+          <input id="dietFile" type="file" accept=".csv,.xlsx,.xls">
+          <button id="uploadDiet" class="primary">Upload</button>
+        </div>
+        <div class="template-row">
+          <button id="downloadTemplate" class="secondary">Download CSV Template</button>
+        </div>
+      </div>
+
+      <div id="dietStatus" class="muted"></div>
+    </section>
+
+    <section class="insights collapsible">
+      <h2>Insights</h2>
+      <div id="insightsPanel"></div>
+      <button id="weeklySummaryBtn" class="secondary summary-btn">📊 Weekly Summary</button>
+      <div id="weeklySummaryPanel" class="hidden"></div>
+    </section>
+
+    <section class="meals collapsible">
+      <h2>Meal & Protein Tracker</h2>
+      <p class="muted">Default foods in this fat-loss plan. Enter servings, protein & calories auto-calculated.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Food</th>
+              <th>Servings</th>
+              <th>Prot/srv</th>
+              <th>Cal/srv</th>
+              <th>Prot (g)</th>
+              <th>Cal</th>
+            </tr>
+          </thead>
+          <tbody id="mealRows">
+            <!-- Rows generated by popup.js -->
+          </tbody>
+        </table>
+      </div>
+      <div class="protein-summary">
+        <div>Total protein: <strong id="totalProtein">0</strong> g</div>
+        <div>Total calories: <strong id="totalCalories">0</strong> kcal</div>
+      </div>
+      <div id="proteinWarning" class="warning hidden">⚠️ Below protein goal</div>
+      <div id="calorieBar" class="calorie-bar-wrap hidden">
+        <div class="calorie-bar-label"><span>Calories</span><span id="calorieBarText"></span></div>
+        <div class="calorie-bar-track">
+          <div id="calorieBarFill" class="calorie-bar-fill"></div>
+        </div>
+      </div>
+
+      <div class="meals-copy-row">
+        <button id="copyYesterdayBtn" class="secondary">📋 Copy from Yesterday</button>
+      </div>
+
+      <!-- Custom Foods: user-defined foods persisted across sessions -->
+      <div class="custom-foods-section">
+        <div class="extras-header">
+          <span class="muted">Custom Foods</span>
+          <button id="showCustomFoodForm" class="extra-add-btn">+ Add Food</button>
+        </div>
+        <div id="customFoodForm" class="extra-form hidden">
+          <input id="cfName" type="text" placeholder="Food name (e.g. Whey Protein)" maxlength="40">
+          <div class="ef-nums">
+            <div class="ef-field">
+              <label>Protein / serving (g)</label>
+              <input id="cfProtein" type="number" min="0" step="0.5" placeholder="0">
+            </div>
+            <div class="ef-field">
+              <label>Calories / serving</label>
+              <input id="cfCal" type="number" min="0" placeholder="0">
+            </div>
+          </div>
+          <button id="addCustomFoodBtn" class="primary">Add to Food List</button>
+        </div>
+        <div id="customFoodsManager"></div>
+      </div>
+
+      <!-- Today's Extras: ad-hoc foods outside the normal plan -->
+      <div class="extras-section">
+        <div class="extras-header">
+          <span class="muted">Today's Extras</span>
+          <button id="showExtraForm" class="extra-add-btn">+ Add</button>
+        </div>
+        <div id="extraForm" class="extra-form hidden">
+          <input id="efName" type="text" placeholder="Food / drink name" maxlength="40">
+          <div class="ef-nums">
+            <div class="ef-field">
+              <label>Protein (g)</label>
+              <input id="efProtein" type="number" min="0" step="0.5" placeholder="0">
+            </div>
+            <div class="ef-field">
+              <label>Calories</label>
+              <input id="efCal" type="number" min="0" placeholder="0">
+            </div>
+          </div>
+          <button id="addExtraBtn" class="primary">Add to Today</button>
+        </div>
+        <div id="extrasList"></div>
+      </div>
+    </section>
+
+    <section class="weekly collapsible">
+      <h2>Weekly Progress</h2>
+      <div class="weekly-form">
+        <label>Height (cm) — for BMI<input id="heightInput" type="number" step="0.5" placeholder="e.g. 175"></label>
+        <label>Weight (kg)<input id="weight" type="number" step="0.1"></label>
+        <label>Waist (cm)<input id="waist" type="number" step="0.1"></label>
+        <label>Photo<input id="photo" type="file" accept="image/*"></label>
+        <button id="saveWeekly" class="primary">Save Weekly Entry</button>
+      </div>
+      <div class="weekly-summary">
+        <canvas id="trendChart"></canvas>
+        <div id="weeklyStats"></div>
+      </div>
+      <div id="photosGallery"></div>
+    </section>
+
+    <section class="weekly-schedule collapsible">
+      <h2>Weekly Meal Schedule</h2>
+      <div id="weeklySchedule"></div>
+    </section>
+
+    <section class="controls">
+      <button id="saveDay" class="primary">Save Today</button>
+      <button id="resetWeek" class="danger">Reset Week</button>
+    </section>
+    <section class="io-section">
+      <div class="io-row">
+        <button id="exportDataBtn" class="secondary">📤 Export Data</button>
+        <label class="secondary io-import-label">📥 Import
+          <input id="importDataInput" type="file" accept=".json" class="hidden">
+        </label>
+      </div>
+    </section>
+
+    <footer>
+      <small class="muted">Tip: set your wake-up time in Settings for night-shift scheduling.</small>
+    </footer>
+  </div>
+
+  <script src="lib/simple-chart.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>

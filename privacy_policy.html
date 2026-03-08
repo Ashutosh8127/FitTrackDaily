@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy — FitTrack Daily</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --accent: #10b981;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 48px 24px;
+        }
+
+        .wrapper {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .last-updated {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        section {
+            margin-bottom: 36px;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        p {
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: disc;
+            padding-left: 20px;
+            color: var(--muted);
+        }
+
+        ul li {
+            margin-bottom: 6px;
+        }
+
+        .highlight {
+            background: var(--surface);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+
+        .highlight p {
+            color: var(--text);
+            margin: 0;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="logo">💪</div>
+            <div>
+                <h1>FitTrack <span>Daily</span></h1>
+                <div class="last-updated">Privacy Policy · Last updated: March 2026</div>
+            </div>
+        </header>
+
+        <div class="highlight">
+            <p>🔒 <strong>Short version:</strong> FitTrack Daily stores all your data locally on your own device. We
+                collect nothing. We transmit nothing. There are no servers, no accounts, and no analytics.</p>
+        </div>
+
+        <section>
+            <h2>1. Information We Collect</h2>
+            <p>FitTrack Daily does <strong>not</strong> collect, transmit, or store any personal information on external
+                servers.</p>
+            <p>All data you enter — meals, weight, steps, sleep, photos, notes, and settings — is stored exclusively in
+                your browser's local storage using the <code>chrome.storage.local</code> API. This data:</p>
+            <ul>
+                <li>Stays on your device only</li>
+                <li>Is never sent to any server or third party</li>
+                <li>Is never used for advertising or analytics</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>2. Permissions Used</h2>
+            <p>The extension requests the following Chrome permissions:</p>
+            <ul>
+                <li><strong>storage</strong> — To save your daily logs, settings, and diet plan locally on your device
+                </li>
+                <li><strong>alarms</strong> — To schedule your daily reminder notification at your chosen time, even
+                    when the popup is closed</li>
+                <li><strong>notifications</strong> — To show you the daily log reminder and fasting completion alerts
+                </li>
+            </ul>
+            <p>No network or host permissions are requested. The extension cannot access any website or make any
+                internet requests.</p>
+        </section>
+
+        <section>
+            <h2>3. Data Storage & Retention</h2>
+            <p>Your data is stored in <code>chrome.storage.local</code> on your device. It persists until you:</p>
+            <ul>
+                <li>Use the <strong>Reset Week</strong> button inside the extension</li>
+                <li>Use the extension's <strong>import</strong> feature to overwrite data</li>
+                <li>Uninstall the extension (Chrome clears local storage on uninstall)</li>
+                <li>Clear your browser data manually</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Photos</h2>
+            <p>Progress photos you upload are converted to base64 data-URLs and stored locally in
+                <code>chrome.storage.local</code>. They are never uploaded anywhere. The extension warns you when
+                storage is nearing Chrome's 10 MB limit.</p>
+        </section>
+
+        <section>
+            <h2>5. Export & Import</h2>
+            <p>The Export feature generates a local JSON file downloaded to your computer. The Import feature reads a
+                JSON file from your computer. Neither operation involves any external server or service.</p>
+        </section>
+
+        <section>
+            <h2>6. Third-Party Services</h2>
+            <p>FitTrack Daily uses no third-party services, SDKs, analytics, or CDNs. All code is self-contained within
+                the extension package.</p>
+        </section>
+
+        <section>
+            <h2>7. Children's Privacy</h2>
+            <p>FitTrack Daily is not directed at children under 13. We do not knowingly collect any information from
+                children.</p>
+        </section>
+
+        <section>
+            <h2>8. Changes to This Policy</h2>
+            <p>If we update this policy, the updated version will be included with new extension releases. The "Last
+                updated" date at the top of this page will reflect the most recent revision.</p>
+        </section>
+
+        <section>
+            <h2>9. Contact</h2>
+            <p>For questions about this privacy policy, please open an issue on our <a
+                    href="https://github.com/your-username/fittrack-daily" target="_blank">GitHub repository</a>.</p>
+        </section>
+
+        <footer>
+            FitTrack Daily is open source · <a href="https://github.com/your-username/fittrack-daily">GitHub</a> · MIT
+            License
+        </footer>
+    </div>
+</body>
+
+</html>

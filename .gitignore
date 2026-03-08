@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (scripts)
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Node (if ever added)
+node_modules/
+npm-debug.log*
+
+# Build artifacts
+dist/
+build/
+*.zip
+
+# Base64 placeholder files (legacy)
+*.b64
+
+# Environment
+.env
+.env.local
