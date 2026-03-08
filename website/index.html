@@ -57,6 +57,33 @@
         </div>
     </header>
 
+    <section class="app-showcase">
+        <div class="container">
+            <h2 class="section-title">Experience the Power of FitTrack</h2>
+            <div class="carousel-container">
+                <div class="carousel" id="appCarousel">
+                    <div class="slide active">
+                        <img src="assets/dashboard.png" alt="Dashboard Mockup">
+                        <div class="slide-caption">Real-time Fasting Timer & Daily Checklist</div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/meals.png" alt="Meal Tracker Mockup">
+                        <div class="slide-caption">Intuitive Meal & Protein Tracking</div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/insights.png" alt="Insights Mockup">
+                        <div class="slide-caption">Beautiful Weight Trend Visualizations</div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" id="prevSlide">&lsaquo;</button>
+                    <button class="carousel-btn next" id="nextSlide">&rsaquo;</button>
+                </div>
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
+        </div>
+    </section>
+
     <section id="features" class="features">
         <div class="container">
             <h2 class="section-title">Everything You Need to Succeed</h2>
@@ -105,6 +132,44 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Simple Carousel Logic
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('carouselDots');
+        const prevBtn = document.getElementById('prevSlide');
+        const nextBtn = document.getElementById('nextSlide');
+        let currentSlide = 0;
+
+        // Create dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateCarousel() {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+                dots[i].classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function goToSlide(n) {
+            currentSlide = (n + slides.length) % slides.length;
+            updateCarousel();
+        }
+
+        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        // Auto play
+        setInterval(() => goToSlide(currentSlide + 1), 5000);
+    </script>
 </body>
 
 </html>
