@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Daily - Store Screenshot Framer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #10b981;
+            --blue: #3b82f6;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0d1117;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1300px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            background: #334155;
+            padding: 10px;
+            border-radius: 6px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            background: #334155;
+            padding: 12px;
+            border-radius: 6px;
+            color: white;
+            border: none;
+            width: 300px;
+        }
+
+        button {
+            background: var(--accent);
+            color: #013220;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        /* The Frame Canvas */
+        #captureArea {
+            width: 1280px;
+            height: 800px;
+            background: radial-gradient(circle at 30% 30%, #1e293b, #0f172a);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bg-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .label-content {
+            position: absolute;
+            left: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 550px;
+            z-index: 10;
+        }
+
+        .label-content h2 {
+            font-size: 64px;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+            font-weight: 800;
+        }
+
+        .label-content p {
+            font-size: 24px;
+            opacity: 0.8;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .mockup-wrapper {
+            width: 480px;
+            height: 700px;
+            background: #0f172a;
+            border-radius: 24px;
+            margin-right: 80px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 5;
+        }
+
+        .mockup-header {
+            height: 24px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #475569;
+        }
+
+        #screenshotImg {
+            width: 100%;
+            height: calc(100% - 24px);
+            object-fit: cover;
+            background: #1a202c;
+        }
+
+        .download-hint {
+            margin-top: 20px;
+            opacity: 0.6;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Store Screenshot Framer</h1>
+        <p>Use this tool to create 100% accurate 1280x800 Store graphics using your real app screenshots.</p>
+
+        <div class="controls">
+            <div>
+                <label>1. Select Real Screenshot:</label><br>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            <div>
+                <label>2. Heading:</label><br>
+                <input type="text" id="headingInput" placeholder="e.g. Track Every Goal">
+            </div>
+            <div>
+                <label>3. Sub-text:</label><br>
+                <input type="text" id="subtextInput" placeholder="e.g. Master your fast and nutrition.">
+            </div>
+            <button onclick="downloadScreenshot()">Download Store Image</button>
+        </div>
+
+        <div id="captureArea">
+            <div class="bg-dots"></div>
+            <div class="label-content">
+                <h2 id="frameHeading">Track Every Goal</h2>
+                <p id="frameSubtext">FitTrack Daily gives you total control over your health journey, right in your
+                    browser.</p>
+            </div>
+            <div class="mockup-wrapper">
+                <div class="mockup-header">
+                    <div class="dot" style="background:#ef4444"></div>
+                    <div class="dot" style="background:#f59e0b"></div>
+                    <div class="dot" style="background:#10b981"></div>
+                </div>
+                <img id="screenshotImg"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                    alt="Your Screenshot">
+            </div>
+        </div>
+
+        <p class="download-hint">Tip: If "Download" doesn't work, right-click the frame and "Save Image As" (or use
+            browser screenshot tool).</p>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const headingInput = document.getElementById('headingInput');
+        const subtextInput = document.getElementById('subtextInput');
+        const screenshotImg = document.getElementById('screenshotImg');
+        const frameHeading = document.getElementById('frameHeading');
+        const frameSubtext = document.getElementById('frameSubtext');
+
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (re) => { screenshotImg.src = re.target.result; };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        headingInput.oninput = (e) => { frameHeading.innerText = e.target.value || "Track Every Goal"; };
+        subtextInput.oninput = (e) => { frameSubtext.innerText = e.target.value || "FitTrack Daily gives you total control over your health journey, right in your browser."; };
+
+        async function downloadScreenshot() {
+            const canvas = await html2canvas(document.getElementById('captureArea'), {
+                scale: 1, // Store wants exactly 1280x800
+                width: 1280,
+                height: 800
+            });
+            const link = document.createElement('a');
+            link.download = 'fittrack_store_screenshot.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+
+</html>
