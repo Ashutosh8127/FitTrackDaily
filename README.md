@@ -39,8 +39,8 @@ See [privacy_policy.html](privacy_policy.html) for the full policy.
 
 ## Installation
 
-### From Chrome Web Store *(coming soon)*
-Search "FitTrack Daily" on the [Chrome Web Store](https://chrome.google.com/webstore).
+### From Chrome Web Store
+Search "FitTrack Daily" on the [Chrome Web Store](https://chromewebstore.google.com/detail/iknjdaipbdibkelihekikmeoeminfdgp).
 
 ### Load Unpacked (Developer Mode)
 1. Clone or download this repository
